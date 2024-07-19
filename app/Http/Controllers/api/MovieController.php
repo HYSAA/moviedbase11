@@ -8,18 +8,17 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        $movies = Movie::all();
-        return response()->json($movies);
-    }
+        $moviecontroller = MovieController::find($id);
 
-    public function show($id)
-    {
-        $movie = Movie::find($id);
-        if (!$movie) {
+        if (!$moviecontroller) {
             return response()->json(['error' => 'Movie not found'], 404);
         }
-        return response()->json($movie);
+
+   
+        $moviecontroller->load('movies');
+
+        return response()->json($moviecontroller);
     }
 }
